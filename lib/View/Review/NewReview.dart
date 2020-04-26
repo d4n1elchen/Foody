@@ -104,10 +104,10 @@ class NewReviewState extends State<NewReview> {
               keyboardType: TextInputType.emailAddress,
               focusNode: _reviewFocus,
               textInputAction: TextInputAction.newline,
-              style: FormInputAreaDecoration.CustomTextStyle(),
+              style: FormInputDecoration.CustomTextStyle(),
               textAlign: TextAlign.left,
               textCapitalization: TextCapitalization.none,
-              decoration: FormInputAreaDecoration.FormInputAreaDesign(name: "Review"),
+              decoration: FormInputDecoration.FormInputDesign(name: "Review"),
               validator: (value) => CheckFieldValidation(
                   val: value,
                   password: null,
