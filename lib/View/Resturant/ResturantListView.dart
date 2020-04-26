@@ -3,11 +3,54 @@ import 'package:foody/Theme/Color.dart';
 import 'package:foody/Theme/CustomTextStyle.dart';
 import 'package:foody/View/Resturant/ResturantDetail.dart';
 import 'package:foody/Widgets/CustomOutlineButton.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:foody/Modal/resturants.dart';
 
 class ResturantListView extends StatelessWidget{
   @override
+
+  List<ResturantData> rList = [];
+
+  var cnt = -1;
+
+  void initState(){
+    DatabaseReference resturantRef = FirebaseDatabase.instance.reference().child("resturant");
+    resturantRef.once().then((DataSnapshot snap){
+      var KEYS = snap.value.keys;
+      var DATA = snap.value;
+
+      rList.clear();
+      for(var individualKey in KEYS){
+        ResturantData res = new ResturantData(
+          DATA[individualKey]['name'],
+          DATA[individualKey]['type'],
+          DATA[individualKey]['placeID'],
+        );
+        rList.add(res);
+      }
+    });
+  }
+  
   Widget build(BuildContext context) {
     // TODO: implement build
+    DatabaseReference resturantRef = FirebaseDatabase.instance.reference().child("resturant");
+    resturantRef.once().then((DataSnapshot snap){
+      var KEYS = snap.value.keys;
+      var DATA = snap.value;
+
+      rList.clear();
+      for(var individualKey in KEYS){
+        ResturantData res = new ResturantData(
+          DATA[individualKey]['name'],
+          DATA[individualKey]['type'],
+          DATA[individualKey]['placeID'],
+        );
+        rList.add(res);
+      }
+    });
+    cnt++;
     return LayoutBuilder(
       builder: (context,constraint){
 
@@ -32,8 +75,8 @@ class ResturantListView extends StatelessWidget{
                 width: width, 
                 height: height, 
                 index: index, 
-                name: "Hello!", 
-                type: "Burger",
+                name: rList[cnt].name, 
+                type: rList[cnt].type,
                 image: "https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
               ),
             );
@@ -41,7 +84,7 @@ class ResturantListView extends StatelessWidget{
           separatorBuilder: (context,index){
             return Container();
           },
-          itemCount: 10,
+          itemCount: rList.length,
         );
       },
     );
