@@ -21,7 +21,7 @@ class PlaceReviewView extends StatelessWidget{
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text("25 reviews",style: TextStyle(fontSize: 18.0,fontWeight: FontWeight.bold),),
-                  CustomRatingBar(size: 2.0,)
+                  StatelessRatingBar(rating: 2.0, size: 20,)
                 ],
               ),
             ),
@@ -91,7 +91,7 @@ class PlaceReviewListItem extends StatelessWidget{
                   ),
                 )
               ),
-              CustomRatingBar(size: 3,)
+              StatelessRatingBar(rating: 3.0, size: 20,)
             ],
           ),
           Text("Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book.",

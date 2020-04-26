@@ -27,17 +27,6 @@ class Welcome extends StatelessWidget {
         elevation: 0.0,
         title: Text("Resturant Nearby"),
         backgroundColor: primaryColor,
-        actions: <Widget>[
-          InkResponse(
-            onTap: (){
-
-            },
-            child: Padding(
-              padding: EdgeInsets.only(right: 10.0),
-              child: Icon(Icons.shopping_cart),
-            ),
-          )
-        ],
       ),
       drawer: drawer(),
       body: ResturantList(),

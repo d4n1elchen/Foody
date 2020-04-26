@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:foody/Theme/Color.dart';
 import 'package:foody/Theme/CustomTextStyle.dart';
+import 'package:foody/Widgets/CustomOutlineButton.dart';
 import 'package:foody/View/Resturant/MenuView.dart';
 import 'package:foody/View/Resturant/PlaceDetailsView.dart';
 import 'package:foody/View/Resturant/PlaceReviewView.dart';
-import 'package:foody/Widgets/CustomOutlineButton.dart';
+import 'package:foody/View/Review/NewReview.dart';
 
 class ResturantDetail extends StatefulWidget{
   int index;
   String image;
   String title;
-
 
   ResturantDetail({this.index,this.image,this.title});
 
@@ -40,10 +40,15 @@ class ResturantDetailState extends State<ResturantDetail> with SingleTickerProvi
         title: Text(widget.title),
         actions: <Widget>[
           InkResponse(
-            onTap: (){},
+            onTap: (){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NewReview(resturantName: widget.title)),
+              );
+            },
             child: Padding(
               padding: EdgeInsets.only(right: 10.0),
-              child: Icon(Icons.shopping_cart),
+              child: Icon(Icons.note_add),
             ),
           )
         ],

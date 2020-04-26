@@ -227,28 +227,6 @@ class SignupState extends State<Signup> {
               color: Colors.green,
               onPressed: () => signup(context),
             ),
-            Container(
-              height: 50.0,
-              width: double.infinity,
-              alignment: Alignment.center,
-              child: Text(
-                "OR",
-                style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
-              ),
-            ),
-            CustomButton(
-              text: "Connect with facebook",
-              color: Colors.indigo,
-              onPressed: () {},
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-            CustomButton(
-              text: "Connect with twitter",
-              color: Colors.blue,
-              onPressed: () {},
-            ),
           ],
         ),
       ),

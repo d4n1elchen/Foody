@@ -1,22 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:rating_bar/rating_bar.dart';
 
-class CustomRatingBar extends StatelessWidget{
+class StatefulRatingBar extends StatefulWidget {
+  final double size;
+  final RatingCallback onRatingChanged;
+  StatefulRatingBar({this.size, this.onRatingChanged});
+  createState() => _StatefulRatingBarState();
+}
 
-  double size;
-  CustomRatingBar({this.size});
+class _StatefulRatingBarState extends State<StatefulRatingBar>{
+
+  double rating;
+
+  @override
+  void initState() {
+    super.initState();
+    rating = 3;
+  }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return RatingBar(
-      emptyIcon: Icons.star,
+      onRatingChanged: widget.onRatingChanged,
+      isHalfAllowed: true,
+      emptyIcon: Icons.star_border,
       filledIcon: Icons.star,
       filledColor: Colors.amberAccent,
+      halfFilledIcon: Icons.star_half,
       maxRating: 5,
-      onRatingChanged: (val){},
-      size: 20,
-      initialRating: size,
+      size: widget.size,
+      initialRating: rating,
+    );
+  }
+}
+
+class StatelessRatingBar extends StatelessWidget{
+
+  final double rating;
+  final double size;
+  StatelessRatingBar({this.rating, this.size});
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return RatingBar.readOnly(
+      isHalfAllowed: true,
+      emptyIcon: Icons.star_border,
+      filledIcon: Icons.star,
+      filledColor: Colors.amberAccent,
+      halfFilledIcon: Icons.star_half,
+      maxRating: 5,
+      size: size,
+      initialRating: rating,
     );
   }
 }

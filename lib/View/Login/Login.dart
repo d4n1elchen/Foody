@@ -228,26 +228,6 @@ class LoginState extends State<Login> {
             SizedBox(
               height: 20.0,
             ),
-            Container(
-              alignment: Alignment.center,
-              child: Text("OR", style: TextStyle(fontWeight: FontWeight.w500)),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            CustomButton(
-              text: "Connect with facebook",
-              onPressed: () {},
-              color: Colors.indigo,
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-            CustomButton(
-              text: "Connect with twitter",
-              color: Colors.blue,
-              onPressed: () {},
-            )
           ],
         ),
       ),
