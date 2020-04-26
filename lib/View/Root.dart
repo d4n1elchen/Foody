@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../Widgets/Loader.dart';
 import 'Home/Home.dart';
 import 'Welcome/Welcome.dart';
@@ -44,6 +45,5 @@ class RootState extends State<Root> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(body: launchWidget);
-    ;
   }
 }

@@ -3,8 +3,9 @@ import 'package:rating_bar/rating_bar.dart';
 
 class StatefulRatingBar extends StatefulWidget {
   final double size;
+  final double initialRating;
   final RatingCallback onRatingChanged;
-  StatefulRatingBar({this.size, this.onRatingChanged});
+  StatefulRatingBar({this.initialRating, this.size, this.onRatingChanged});
   createState() => _StatefulRatingBarState();
 }
 
@@ -15,7 +16,7 @@ class _StatefulRatingBarState extends State<StatefulRatingBar>{
   @override
   void initState() {
     super.initState();
-    rating = 3;
+    rating = widget.initialRating;
   }
 
   @override
@@ -23,11 +24,9 @@ class _StatefulRatingBarState extends State<StatefulRatingBar>{
     // TODO: implement build
     return RatingBar(
       onRatingChanged: widget.onRatingChanged,
-      isHalfAllowed: true,
       emptyIcon: Icons.star_border,
       filledIcon: Icons.star,
       filledColor: Colors.amberAccent,
-      halfFilledIcon: Icons.star_half,
       maxRating: 5,
       size: widget.size,
       initialRating: rating,
@@ -45,11 +44,9 @@ class StatelessRatingBar extends StatelessWidget{
   Widget build(BuildContext context) {
     // TODO: implement build
     return RatingBar.readOnly(
-      isHalfAllowed: true,
       emptyIcon: Icons.star_border,
       filledIcon: Icons.star,
       filledColor: Colors.amberAccent,
-      halfFilledIcon: Icons.star_half,
       maxRating: 5,
       size: size,
       initialRating: rating,
