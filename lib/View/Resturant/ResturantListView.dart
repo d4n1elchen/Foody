@@ -3,88 +3,57 @@ import 'package:foody/Theme/Color.dart';
 import 'package:foody/Theme/CustomTextStyle.dart';
 import 'package:foody/View/Resturant/ResturantDetail.dart';
 import 'package:foody/Widgets/CustomOutlineButton.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:foody/Widgets/Loader.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:foody/Modal/resturants.dart';
 
 class ResturantListView extends StatelessWidget{
-  @override
-
-  List<ResturantData> rList = [];
-
-  var cnt = -1;
-
-  void initState(){
-    DatabaseReference resturantRef = FirebaseDatabase.instance.reference().child("resturant");
-    resturantRef.once().then((DataSnapshot snap){
-      var KEYS = snap.value.keys;
-      var DATA = snap.value;
-
-      rList.clear();
-      for(var individualKey in KEYS){
-        ResturantData res = new ResturantData(
-          DATA[individualKey]['name'],
-          DATA[individualKey]['type'],
-          DATA[individualKey]['placeID'],
-        );
-        rList.add(res);
-      }
-    });
-  }
   
   Widget build(BuildContext context) {
     // TODO: implement build
-    DatabaseReference resturantRef = FirebaseDatabase.instance.reference().child("resturant");
-    resturantRef.once().then((DataSnapshot snap){
-      var KEYS = snap.value.keys;
-      var DATA = snap.value;
-
-      rList.clear();
-      for(var individualKey in KEYS){
-        ResturantData res = new ResturantData(
-          DATA[individualKey]['name'],
-          DATA[individualKey]['type'],
-          DATA[individualKey]['placeID'],
-        );
-        rList.add(res);
-      }
-    });
-    cnt++;
     return LayoutBuilder(
-      builder: (context,constraint){
-
+      builder: (context, constraint){
         double height = constraint.biggest.height;
         double width = constraint.biggest.width;
-        return ListView.separated(
-          key: PageStorageKey("list_data"),
-          itemBuilder: (context,index){
-            return GestureDetector(
-              onTap: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ResturantDetail(
-                        index: index, 
-                        image: "https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500", 
-                        title: "Hello!",
+        return StreamBuilder<QuerySnapshot>(
+          stream: Firestore.instance.collection("resturant").snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) return LoaderWidget();
+            final int messageCount = snapshot.data.documents.length;
+            
+            return ListView.separated(
+              key: PageStorageKey("list_data"),
+              itemCount: messageCount,
+              itemBuilder: (context, index){
+                final DocumentSnapshot document = snapshot.data.documents[index];
+                return GestureDetector(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ResturantDetail(
+                          index: index, 
+                          image: "https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500", 
+                          title: document["name"],
+                        ),
                       ),
-                    ),
+                    );
+                  },
+                  child: ResturantListItem(
+                    width: width, 
+                    height: height, 
+                    index: index, 
+                    name: document["name"], 
+                    type: document["type"],
+                    image: "https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                  ),
                 );
               },
-              child: ResturantListItem(
-                width: width, 
-                height: height, 
-                index: index, 
-                name: rList[cnt].name, 
-                type: rList[cnt].type,
-                image: "https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-              ),
+              separatorBuilder: (context, index){
+                return Container();
+              },
             );
-          },
-          separatorBuilder: (context,index){
-            return Container();
-          },
-          itemCount: rList.length,
+          }
         );
       },
     );
@@ -114,13 +83,13 @@ class TextSection extends StatelessWidget{
         ),
         Container(
           child: CustomOutlineButton(
-          onPressed: (){
+            onPressed: (){
 
-          },
-          textStyle: resturantListButton(),
-          highlightColor: primaryColor,
-          borderColor: primaryColor,
-          text: "Ready in 20Min",
+            },
+            textStyle: resturantListButton(),
+            highlightColor: primaryColor,
+            borderColor: primaryColor,
+            text: "Open in Google Map",
           ),
         ),
       ],
@@ -136,7 +105,7 @@ class ResturantListItem extends StatelessWidget{
   final String name;
   final String type;
   final String image;
-  ResturantListItem({this.width,this.height,this.index,this.name,this.type,this.image});
+  ResturantListItem({this.width, this.height, this.index, this.name, this.type, this.image});
 
   @override
   Widget build(BuildContext context) {

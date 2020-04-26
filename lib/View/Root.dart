@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../Widgets/Loader.dart';
+import 'package:foody/Widgets/Loader.dart';
 import 'Home/Home.dart';
 import 'Welcome/Welcome.dart';
 

@@ -22,7 +22,6 @@ class MainPage extends StatelessWidget {
           title: TextStyle(
             color: Colors.white
           ),
-
         ),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: primaryColor
