@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:foody/Widgets/CustomDivider.dart';
 import 'package:foody/Widgets/CustomRatingBar.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class PlaceReviewView extends StatelessWidget{
   String placeID;

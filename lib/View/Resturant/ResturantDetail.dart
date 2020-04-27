@@ -6,6 +6,8 @@ import 'package:foody/View/Resturant/MenuView.dart';
 import 'package:foody/View/Resturant/PlaceDetailsView.dart';
 import 'package:foody/View/Resturant/PlaceReviewView.dart';
 import 'package:foody/View/Review/NewReview.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_place/google_place.dart';
 
 class ResturantDetail extends StatefulWidget{
   int index;
@@ -18,19 +20,26 @@ class ResturantDetail extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return ResturantDetailState();
+    return ResturantDetailState(placeID: placeID);
   }
 }
 
 class ResturantDetailState extends State<ResturantDetail> with SingleTickerProviderStateMixin{
 
+  String placeID;
+  ResturantDetailState({this.placeID});
+
   TabController tabController;
+  DetailsResult detailsResult;
+  
 
   @override
-  void initState() {
+  void initState(){
     // TODO: implement initState
     super.initState();
+    getDetils(this.placeID);
     tabController = TabController(length: 3,vsync: this,initialIndex: 0);
+
   }
 
   @override
@@ -78,18 +87,28 @@ class ResturantDetailState extends State<ResturantDetail> with SingleTickerProvi
               text: "Ready in 20Min",
             ),
           Expanded(
-            child: DetailTabView(tabController: tabController, placeID: widget.placeID),
+            child: DetailTabView(tabController: tabController, placeID: widget.placeID, detailsResult: detailsResult),
           )
         ],
       )
     );
   }
+  void getDetils(String placeID) async {
+    var googlePlace = await GooglePlace('AIzaSyBvaJ-Cdd8pc46GVivjnmGkSaECC0xZQqM');
+    var result = await googlePlace.details.get(placeID);
+    setState(() {
+        detailsResult = result.result;
+      });
+  }
 }
+
+
 
 class DetailTabView extends StatelessWidget{
   TabController tabController;
   String placeID;
-  DetailTabView({this.tabController,this.placeID});
+  DetailsResult detailsResult;
+  DetailTabView({this.tabController,this.placeID,this.detailsResult});
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +143,9 @@ class DetailTabView extends StatelessWidget{
             controller: tabController,
             children: <Widget>[
               MenuView(placeID: placeID),
-              PlaceDetailView(placeID: placeID),
+              PlaceDetailView(placeID: this.placeID,
+              detailsResult: this.detailsResult,
+              ),
               PlaceReviewView(placeID: placeID)
             ],
           ),
