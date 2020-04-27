@@ -4,6 +4,8 @@ import 'package:foody/Widgets/CustomDivider.dart';
 import 'package:foody/Widgets/CustomRatingBar.dart';
 
 class PlaceReviewView extends StatelessWidget{
+  String placeID;
+  PlaceReviewView({this.placeID});
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

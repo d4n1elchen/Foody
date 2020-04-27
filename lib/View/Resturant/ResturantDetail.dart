@@ -46,7 +46,6 @@ class ResturantDetailState extends State<ResturantDetail> with SingleTickerProvi
                   context,
                   MaterialPageRoute(builder: (context) => NewReview(
                     resturantName: widget.title,
-                    resturantID: widget.placeID,
                     )
                   ),
               );
@@ -124,9 +123,9 @@ class DetailTabView extends StatelessWidget{
           child: TabBarView(
             controller: tabController,
             children: <Widget>[
-              MenuView(),
+              MenuView(placeID: placeID),
               PlaceDetailView(placeID: placeID),
-              PlaceReviewView()
+              PlaceReviewView(placeID: placeID)
             ],
           ),
         )

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:foody/Theme/Color.dart';
 
 class MenuView extends StatelessWidget {
+  String placeID;
+  MenuView({this.placeID});
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
