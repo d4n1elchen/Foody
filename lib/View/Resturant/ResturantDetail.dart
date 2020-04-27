@@ -11,8 +11,9 @@ class ResturantDetail extends StatefulWidget{
   int index;
   String image;
   String title;
+  String placeID;
 
-  ResturantDetail({this.index,this.image,this.title});
+  ResturantDetail({this.index,this.image,this.title,this.placeID});
 
   @override
   State<StatefulWidget> createState() {
@@ -43,7 +44,11 @@ class ResturantDetailState extends State<ResturantDetail> with SingleTickerProvi
             onTap: (){
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => NewReview(resturantName: widget.title)),
+                  MaterialPageRoute(builder: (context) => NewReview(
+                    resturantName: widget.title,
+                    resturantID: widget.placeID,
+                    )
+                  ),
               );
             },
             child: Padding(
@@ -74,7 +79,7 @@ class ResturantDetailState extends State<ResturantDetail> with SingleTickerProvi
               text: "Ready in 20Min",
             ),
           Expanded(
-            child: DetailTabView(tabController: tabController,),
+            child: DetailTabView(tabController: tabController, placeID: widget.placeID),
           )
         ],
       )
@@ -84,8 +89,8 @@ class ResturantDetailState extends State<ResturantDetail> with SingleTickerProvi
 
 class DetailTabView extends StatelessWidget{
   TabController tabController;
-
-  DetailTabView({this.tabController});
+  String placeID;
+  DetailTabView({this.tabController,this.placeID});
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +125,7 @@ class DetailTabView extends StatelessWidget{
             controller: tabController,
             children: <Widget>[
               MenuView(),
-              PlaceDetailView(),
+              PlaceDetailView(placeID: placeID),
               PlaceReviewView()
             ],
           ),
