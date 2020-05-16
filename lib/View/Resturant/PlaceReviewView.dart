@@ -3,10 +3,13 @@ import 'package:flutter/widgets.dart';
 import 'package:foody/Widgets/CustomDivider.dart';
 import 'package:foody/Widgets/CustomRatingBar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PlaceReviewView extends StatelessWidget{
   String placeID;
   PlaceReviewView({this.placeID});
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -34,7 +37,9 @@ class PlaceReviewView extends StatelessWidget{
           ),
           Expanded(
             child: Container(
-              child: PlaceReivewList(),
+              child: PlaceReviewList(
+                placeID: placeID
+              ),
             ),
           )
         ],
@@ -43,11 +48,36 @@ class PlaceReviewView extends StatelessWidget{
   }
 }
 
-class PlaceReivewList extends StatelessWidget{
+class PlaceReviewList extends StatelessWidget{
+  String placeID;
+  PlaceReviewList({this.placeID});
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return ListView.separated(
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection("resturant/$placeID/Rating").snapshots(),
+      builder: (context, snapshot) {
+        final int messageCount = snapshot.data.documents.length;
+            
+        return ListView.separated(
+          key: PageStorageKey("list_data"),
+          itemCount: messageCount,
+          itemBuilder: (context, index){
+            final DocumentSnapshot document = snapshot.data.documents[index];
+            return PlaceReviewListItem(
+              rate:double.parse(document["Rate"]), 
+              comment:document["Comment"],
+              name:document["name"]
+            );
+          },
+          separatorBuilder: (context,index){
+            return SizedBox(height: 20.0,);
+          },
+        );
+      }
+    );
+    /*return ListView.separated(
         itemBuilder: (context,index){
           return PlaceReviewListItem();
         },
@@ -55,11 +85,15 @@ class PlaceReivewList extends StatelessWidget{
           return SizedBox(height: 20.0,);
         },
         itemCount: 10
-    );
+    );*/
   }
 }
 
 class PlaceReviewListItem extends StatelessWidget{
+  double rate;
+  String comment;
+  String name;
+  PlaceReviewListItem({this.rate,this.comment,this.name});
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -88,16 +122,16 @@ class PlaceReviewListItem extends StatelessWidget{
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("User name",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0),),
+                      Text(name,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0),),
                       Text("July 20th,2019",style: TextStyle(fontSize: 13.0),)
                     ],
                   ),
                 )
               ),
-              StatelessRatingBar(rating: 3.0, size: 20,)
+              StatelessRatingBar(rating: rate, size: 20,)
             ],
           ),
-          Text("Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book.",
+          Text(comment,
             style: TextStyle(fontSize: 13),
             maxLines: 3,
           ),
