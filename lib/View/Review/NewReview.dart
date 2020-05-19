@@ -76,75 +76,75 @@ class NewReviewState extends State<NewReview> {
 
   Widget reviewForm(BuildContext context) {
     return SingleChildScrollView(
-        child: Form(
-      key: _formKey,
-      autovalidate: _autoValid,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 30.0),
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: 20.0,
-            ),
-            PageHeader(title: "Post a new review"),
-            SizedBox(
-              height: 30.0,
-            ),
-            TextFormField(
-              enabled: false,
-              initialValue: widget.resturantName,
-              textInputAction: TextInputAction.next,
-              style: FormInputDecoration.CustomTextStyle(),
-              textAlign: TextAlign.center,
-              textCapitalization: TextCapitalization.none,
-              decoration: FormInputDecoration.FormInputDesign(name: "Resturant Name"),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            DropdownFormField(
-              teamList: this.teamList,
-              initialValue: this.team,
-              onSaved: (value) => this.team = value,
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            RatingFormField(
-              initialValue: this.rating,
-              onSaved: (value) => this.rating = value,
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            TextFormField(
-              maxLines: 10,
-              onSaved: (val) => this.review = val,
-              keyboardType: TextInputType.emailAddress,
-              focusNode: _reviewFocus,
-              textInputAction: TextInputAction.newline,
-              style: FormInputDecoration.CustomTextStyle(),
-              textAlign: TextAlign.left,
-              textCapitalization: TextCapitalization.none,
-              decoration: FormInputDecoration.FormInputDesign(name: "Review"),
-              validator: (value) => CheckFieldValidation(
-                  val: value,
-                  password: null,
-                  fieldName: "Review",
-                  fieldType: VALIDATION_TYPE.TEXT),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            CustomButton(
-              text: "Submit",
-              color: Colors.green,
-              onPressed: () => _submit(context),
-            ),
-          ],
-        ),
-      ),
-    ));
+      child: Form(
+        key: _formKey,
+        autovalidate: _autoValid,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30.0),
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 20.0,
+              ),
+              PageHeader(title: "Post a new review"),
+              SizedBox(
+                height: 30.0,
+              ),
+              TextFormField(
+                enabled: false,
+                initialValue: widget.resturantName,
+                textInputAction: TextInputAction.next,
+                style: FormInputDecoration.CustomTextStyle(),
+                textAlign: TextAlign.center,
+                textCapitalization: TextCapitalization.none,
+                decoration: FormInputDecoration.FormInputDesign(name: "Resturant Name"),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              DropdownFormField(
+                teamList: this.teamList,
+                initialValue: this.team,
+                onSaved: (value) => this.team = value,
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              RatingFormField(
+                initialValue: this.rating,
+                onSaved: (value) => this.rating = value,
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              TextFormField(
+                maxLines: 10,
+                onSaved: (val) => this.review = val,
+                keyboardType: TextInputType.emailAddress,
+                focusNode: _reviewFocus,
+                textInputAction: TextInputAction.newline,
+                style: FormInputDecoration.CustomTextStyle(),
+                textAlign: TextAlign.left,
+                textCapitalization: TextCapitalization.none,
+                decoration: FormInputDecoration.FormInputDesign(name: "Review"),
+                validator: (value) => CheckFieldValidation(
+                    val: value,
+                    password: null,
+                    fieldName: "Review",
+                    fieldType: VALIDATION_TYPE.TEXT),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              CustomButton(
+                text: "Submit",
+                color: Colors.green,
+                onPressed: () => _submit(context),
+              ),
+            ],),
+        )
+      )
+    );
   }
 }
 

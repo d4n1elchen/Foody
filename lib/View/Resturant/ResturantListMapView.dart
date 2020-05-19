@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:foody/View/Resturant/SearchPlaceView.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ResturantMapView extends StatefulWidget {
@@ -11,34 +12,27 @@ class ResturantMapView extends StatefulWidget {
 
 class ResturantMapViewState extends State<ResturantMapView> with AutomaticKeepAliveClientMixin<ResturantMapView>, TickerProviderStateMixin{
   Completer<GoogleMapController> _controller = Completer();
-
-  Animation animation;
-  AnimationController animationController;
-  Animation offset;
   
   double fromBottom = 0;
+  double panelPos = 100.0;
+
+  Animation animation;
+  Animation sizeFactor;
+  AnimationController animationController;
 
   @override
   void initState() {
     super.initState();
     
     animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 200));
-    animation = Tween<double>(begin: 0.0,end: 250.0)
+    animation = Tween<double>(begin: 0.0, end: panelPos)
                 .animate(CurvedAnimation(parent: animationController, curve: Curves.ease));
-
-    offset = Tween<Offset>(begin: Offset(0.0,1.0), end: Offset(0.0, 0.0))
-             .animate(animationController);
-
-    animation.addListener((){
-      setState((){});
-    });
-
-    offset.addListener((){
-    });
+    sizeFactor = Tween<double>(begin: 0.0, end: 1.0)
+                .animate(CurvedAnimation(parent: animationController, curve: Curves.ease));
   }
 
   @override
-  bool get wantKeepAlive => true;   //by default it will be null, change it to true.
+  bool get wantKeepAlive => true;
 
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
@@ -64,11 +58,11 @@ class ResturantMapViewState extends State<ResturantMapView> with AutomaticKeepAl
         ),
         getBlurWidget(),
         Positioned(
-            bottom: animation.value,
+            bottom: 0,
             child: Align(
               alignment: Alignment.center,
               child: SafeArea(
-                bottom: (animation.value == 0) ? true : false,
+                bottom: true,
                 minimum: EdgeInsets.only(bottom: 10.0),
                 child: Container(
                     width: MediaQuery.of(context).size.width,
@@ -78,7 +72,7 @@ class ResturantMapViewState extends State<ResturantMapView> with AutomaticKeepAl
                         onPressed: (){
                           if(fromBottom == 100){
                             animationController.reverse();
-                            setState(() {
+                            setState((){
                               fromBottom = 0;
                             });
                           }else{
@@ -97,28 +91,35 @@ class ResturantMapViewState extends State<ResturantMapView> with AutomaticKeepAl
         ),
         Align(
           alignment: Alignment.bottomCenter,
-          child: SlideTransition(
-            position: offset,
-            child: Container(
-              height: 250.0,
-              color: Colors.white,
-              width: double.infinity,
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
-                    child: Text("Search",style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w600),),
+          child: SizeTransition(
+            sizeFactor: sizeFactor,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return Container(
+                  height: constraints.maxHeight - 100.0,
+                  color: Colors.white,
+                  width: double.infinity,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10.0),
+                        child: Text("Search", style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w600),),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(color: Colors.grey[200]))),
+                      ),
+                      Expanded(
+                        child: SearchPlaceView(
+                          onSearchResult: (res) {
+                            //animationController.forward();
+                          }
+                        ),
+                      )
+                    ],
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(color: Colors.grey[200]))),
-                  ),
-                  Expanded(
-                    child: Text("這裡會放個搜尋 Bar"),//SearchPlaceView(),
-                  )
-                ],
-              ),
-            )
+                );
+              })
           ),
         )
       ]),
@@ -129,7 +130,7 @@ class ResturantMapViewState extends State<ResturantMapView> with AutomaticKeepAl
   /// Blur widget while open filter
   ///
   getBlurWidget(){
-    return (animation.value > 0) ? GestureDetector(
+    return (fromBottom > 0) ? GestureDetector(
       onTap: (){
         print("TAP OUT SIDE");
         animationController.reverse();

@@ -4,17 +4,14 @@ import 'package:foody/Theme/CustomTextStyle.dart';
 import 'package:foody/View/Resturant/ResturantDetail.dart';
 import 'package:foody/Widgets/CustomOutlineButton.dart';
 import 'package:foody/Widgets/Loader.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:foody/Modal/resturants.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ResturantListView extends StatelessWidget{
   
   Widget build(BuildContext context) {
     // TODO: implement build
     return LayoutBuilder(
-      builder: (context, constraint){
+      builder: (context, constraint) {
         double height = constraint.biggest.height;
         double width = constraint.biggest.width;
         return StreamBuilder<QuerySnapshot>(
@@ -26,10 +23,10 @@ class ResturantListView extends StatelessWidget{
             return ListView.separated(
               key: PageStorageKey("list_data"),
               itemCount: messageCount,
-              itemBuilder: (context, index){
+              itemBuilder: (context, index) {
                 final DocumentSnapshot document = snapshot.data.documents[index];
                 return GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => ResturantDetail(
