@@ -67,9 +67,10 @@ class PlaceReviewList extends StatelessWidget{
           itemBuilder: (context, index){
             final DocumentSnapshot document = snapshot.data.documents[index];
             return PlaceReviewListItem(
-              rate:double.parse(document["Rate"]), 
-              comment:document["Comment"],
-              name:document["name"]
+              rate:double.parse(document["rate"]), 
+              comment:document["comment"],
+              name:document["name"],
+              date:document["date"]
             );
           },
           separatorBuilder: (context,index){
@@ -94,7 +95,8 @@ class PlaceReviewListItem extends StatelessWidget{
   double rate;
   String comment;
   String name;
-  PlaceReviewListItem({this.rate,this.comment,this.name});
+  String date;
+  PlaceReviewListItem({this.rate,this.comment,this.name,this.date});
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -124,7 +126,7 @@ class PlaceReviewListItem extends StatelessWidget{
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(name,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0),),
-                      Text("July 20th,2019",style: TextStyle(fontSize: 13.0),)
+                      Text(date,style: TextStyle(fontSize: 13.0),)
                     ],
                   ),
                 )
