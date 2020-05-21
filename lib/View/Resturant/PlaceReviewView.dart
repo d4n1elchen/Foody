@@ -5,6 +5,7 @@ import 'package:foody/Widgets/CustomRatingBar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:foody/Widgets/Loader.dart';
 
 class PlaceReviewView extends StatelessWidget{
   String placeID;
@@ -58,8 +59,8 @@ class PlaceReviewList extends StatelessWidget{
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection("resturant/$placeID/Rating").snapshots(),
       builder: (context, snapshot) {
+        if (!snapshot.hasData) return LoaderWidget();
         final int messageCount = snapshot.data.documents.length;
-            
         return ListView.separated(
           key: PageStorageKey("list_data"),
           itemCount: messageCount,
